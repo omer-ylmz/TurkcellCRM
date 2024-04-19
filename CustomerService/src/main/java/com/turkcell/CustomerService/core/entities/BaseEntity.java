@@ -10,11 +10,11 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @MappedSuperclass
-public class BaseEntity {
+public class BaseEntity<T> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private T id;
     @Column(name = "createdDate")
     private LocalDateTime createdDate;
     @Column(name = "updateDate")

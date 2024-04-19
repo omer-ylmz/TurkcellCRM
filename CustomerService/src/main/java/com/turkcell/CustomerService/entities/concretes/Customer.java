@@ -3,19 +3,18 @@ package com.turkcell.CustomerService.entities.concretes;
 
 import com.turkcell.CustomerService.core.entities.BaseEntity;
 import com.turkcell.CustomerService.entities.enums.GenderType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Entity
 @Table(name="customers")
-public class Customer extends BaseEntity {
+public class Customer extends BaseEntity<Integer> {
 
     @Column(name = "firstname")
     private String firstName;
@@ -26,14 +25,21 @@ public class Customer extends BaseEntity {
     @Column(name = "birthdate")
     private LocalDate birthDate;
     @Column(name = "gender")
-    private GenderType gender;  //TODO: KONUSULACAK
+    @Enumerated(EnumType.STRING)
+    private GenderType gender;
     @Column(name = "fathername")
     private String fatherName;
     @Column(name = "mothername")
     private String motherName;
-
     @Column(name = "nationalityId")
     private String nationalityNo;
+
+    @OneToMany(mappedBy = "customer")
+    private List<Address> address;
+
+    @OneToOne(mappedBy = "customer")
+    private Contact contact;
+
 
 
 

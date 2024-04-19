@@ -7,6 +7,7 @@ import com.turkcell.CustomerService.business.dtos.response.create.CreatedCustome
 import com.turkcell.CustomerService.business.dtos.response.get.GetCustomerResponse;
 import com.turkcell.CustomerService.business.dtos.response.getAll.GetAllCustomerResponse;
 import com.turkcell.CustomerService.business.dtos.response.updated.UpdatedCustomerResponse;
+import com.turkcell.CustomerService.business.rules.CustomerBusinessRules;
 import com.turkcell.CustomerService.core.utilities.mapping.ModelMapperService;
 import com.turkcell.CustomerService.dataAccess.abstracts.CustomerRepository;
 import com.turkcell.CustomerService.entities.concretes.Customer;
@@ -23,6 +24,7 @@ import java.util.Optional;
 public class CustomerManager implements CustomerService {
     private CustomerRepository customerRepository;
     private ModelMapperService modelMapperService;
+    private CustomerBusinessRules customerBusinessRules;
 
     @Override
     public CreatedCustomerResponse add(CreatedCustomerRequest createdCustomerRequest) {
@@ -47,6 +49,7 @@ public class CustomerManager implements CustomerService {
 
     @Override
     public GetCustomerResponse getById(int id) {
+        customerBusinessRules.customerShouldBeExist(id);
         Optional<Customer> foundCustomer = customerRepository.findById(id);
         if (foundCustomer.isPresent()) {
             GetCustomerResponse getCustomerResponse = modelMapperService.forResponse().map(foundCustomer.get(), GetCustomerResponse.class);
